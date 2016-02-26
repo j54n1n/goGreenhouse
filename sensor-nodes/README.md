@@ -23,6 +23,10 @@ separated *Additional Board Manger URLs* list in the IDE settings:
 https://lowpowerlab.github.io/MoteinoCore/package_LowPowerLab_index.json  
 * Use this folder as your workspace in your Arduino IDE settings. The libraries
 folder will be automatically recognized and included in the IDE.
+* If the Arduino IDE complaints that it can not find a library then it is very
+likely that you forgot to pull in the *git submodule* of the library. Execute
+either `git submodule init` and `git submodule update` or do make a recursive
+clone of the repository via `git clone --recursive <repo-url>`.
 
 #### Further reading
 * http://lowpowerlab.com/moteino
