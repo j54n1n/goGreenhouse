@@ -1,5 +1,10 @@
 #include <JeeLib.h>
 
+#ifdef LED_BUILTIN
+#undef LED_BUILTIN
+#endif
+#define LED_BUILTIN 9 // On Moteino R4 LED is connected to D9 instead of D13.
+
 void setup() {
 	// Setup all ports with weak pull-up to save power.
 	for (uint8_t i = 0; i <= 13; i++) {
