@@ -1,3 +1,6 @@
 [submodule "sensor-nodes/libraries/JeeLib"]
 	path = sensor-nodes/libraries/JeeLib
 	url = git@github.com:j54n1n/jeelib.git
+[submodule "sensor-nodes/libraries/Rfm69"]
+	path = sensor-nodes/libraries/Rfm69
+	url = git@github.com:j54n1n/rfm69.git
