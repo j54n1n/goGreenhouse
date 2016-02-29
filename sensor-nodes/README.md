@@ -28,6 +28,26 @@ likely that you forgot to pull in the *git submodule* of the library. Execute
 either `git submodule init` and `git submodule update` or do make a recursive
 clone of the repository via `git clone --recursive <repo-url>`.
 
+## Hardware Pinout
+* The physical hardware is based upon the *Moteino R4* with the *RFM69HW* radio
+and added *W25X40CL* 512kB Flash memory chip. See also
+[Moteino R4 Schematic](https://github.com/LowPowerLab/Moteino/blob/master/R4/MoteinoR4_schematic.pdf).
+![Moteino R4 Pinout](https://farm4.staticflickr.com/3818/10585364014_df2e1604bc_o.png "Moteino R4 Pinout")
+* The Moteino can be modified to support *JeeLib*'s *JeePort*s 1 to 4 by using
+a simple adapter board. Thus support is given for up to 4 *Plug* boards that can
+contain specific sensors and actuators. See also
+[JeeNode v6 Schematic](http://jeelabs.net/attachments/download/331/jlpcb-128.pdf).
+![JeeNode v6 Pinout](http://jeelabs.org/wp-content/uploads/2013/03/qrc-jn-v6-part.png "JeeNode v6 Pinout")
+* The *RFM69HW* radio can be also connected to the Raspberry PI GPIO header by
+using the SPI pins *3V3*, *MOSI*, *MISO*, *SCLK*, *CE0*, and *GND*. Beware that
+in transmit mode the module can overload the 3.3V power supply pin, ie.
+**do not** use the *high power* settings above *+13dBm* without any external
+voltage regulator supplied by the 5V pin. See also
+[RPi Low-level peripherals](http://elinux.org/RPi_Low-level_peripherals#Power_pins)
+and [RFM69HW Datasheet](http://www.hoperf.com/upload/rf/RFM69HW-V1.3.pdf).
+![RFM69HW Pinout](https://lowpowerlab.com/forum/index.php?action=dlattach;topic=239.0;attach=102;image "RFM69 Pinout")
+![Raspberry Pi Pinout](http://www.raspberrypi-spy.co.uk/wp-content/uploads/2012/06/Raspberry-Pi-GPIO-Layout-Model-B-Plus-rotated-2700x900-1024x341.png)
+
 #### Further reading
 * http://lowpowerlab.com/moteino
 * http://jeelabs.org/2011/06/27/time-controlled-transmissions
