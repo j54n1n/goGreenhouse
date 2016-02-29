@@ -59,3 +59,4 @@ and [RFM69HW Datasheet](http://www.hoperf.com/upload/rf/RFM69HW-V1.3.pdf).
 * http://jeelabs.org/2013/09/06/decoding-bit-fields-part-2
 * http://jeelabs.org/2013/10/05/flashback-anatomy-of-a-transmission
 * http://jeelabs.org/book/1522c
+* http://jeelabs.net/projects/hardware/wiki
