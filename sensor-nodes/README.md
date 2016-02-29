@@ -37,6 +37,7 @@ and added *W25X40CL* 512kB Flash memory chip. See also
 a simple adapter board. Thus support is given for up to 4 *Plug* boards that can
 contain specific sensors and actuators. See also
 [JeeNode v6 Schematic](http://jeelabs.net/attachments/download/331/jlpcb-128.pdf).
+![JeeNode v6 Pinout](http://jeelabs.org/wp-content/uploads/2013/03/qrc-jn-v6-part.png "JeeNode v6 Pinout")
 
 | JeePort | Pin | Name | Moteino   | Description                     |
 |---------|:---:|:----:|:---------:|---------------------------------|
@@ -79,7 +80,6 @@ contain specific sensors and actuators. See also
 |         | 5   | AIO4 | A3(D17)   | Digital/Analog IO               |
 |         | 6   | IRQ  | D3(INT1)  | Digital IO/JeePlug Interrupt    |
 
-![JeeNode v6 Pinout](http://jeelabs.org/wp-content/uploads/2013/03/qrc-jn-v6-part.png "JeeNode v6 Pinout")
 * The *RFM69HW* radio can be also connected to the Raspberry PI GPIO header by
 using the SPI pins *3V3*, *MOSI*, *MISO*, *SCLK*, *CE0*, and *GND*. Beware that
 in transmit mode the module can overload the 3.3V power supply pin, ie.
