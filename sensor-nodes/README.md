@@ -37,6 +37,46 @@ and added *W25X40CL* 512kB Flash memory chip. See also
 a simple adapter board. Thus support is given for up to 4 *Plug* boards that can
 contain specific sensors and actuators. See also
 [JeeNode v6 Schematic](http://jeelabs.net/attachments/download/331/jlpcb-128.pdf).
+| JeePort | Pin | Name | Moteino   | Description                     |
+|---------|:---:|:----:|:---------:|---------------------------------|
+|         |     |      | D0/RX     | Digital IO/Serial UART Receive  |
+|         |     |      | D1/TX     | Digital IO/Serial UART Transmit |
+|         |     |      | D2(INT0)  | Digital IO/RFM69 Interrupt      |
+|         |     |      | D8        | Digital IO/Flash Chip Select    |
+|         |     |      | D9(PWM)   | Digital IO/PWM/Built In LED     |
+|         |     |      | D10       | Digital IO/RFM69 Chip Select    |
+|         |     |      | D11(MOSI) | Digital IO/SPI Bus Data In      |
+|         |     |      | D12(MISO) | Digital IO/SPI Bus Data Out     |
+|         |     |      | D13(SCK)  | Digital IO/SPI Bus Serial Clock |
+|         |     |      | A4(SDA)   | Digital/Analog IO/I2C Data      |
+|         |     |      | A5(SCL)   | Digital/Analog IO/I2C Clock     |
+|         |     |      | A6        | Analog Input                    |
+|         |     |      | A7        | Analog Input                    |
+|         |     |      | AR        | Analog Reference Voltage        |
+| Port 1  | 1   | PWR  | PWR(VIN)  | External Power Supply           |
+|         | 2   | DIO1 | D4        | Digital IO                      |
+|         | 3   | GND  | GND       | Power Supply Ground             |
+|         | 4   | 3V3  | 3V3       | Regulated 3.3V Power Supply     |
+|         | 5   | AIO1 | A0(D14)   | Digital/Analog IO               |
+|         | 6   | IRQ  | D3(INT1)  | Digital IO/JeePlug Interrupt    |
+| Port 2  | 1   | PWR  | PWR(VIN)  | External Power Supply           |
+|         | 2   | DIO2 | D5(PWM)   | Digital IO/PWM Timer 0          |
+|         | 3   | GND  | GND       | Power Supply Ground             |
+|         | 4   | 3V3  | 3V3       | Regulated 3.3V Power Supply     |
+|         | 5   | AIO2 | A1(D15)   | Digital/Analog IO               |
+|         | 6   | IRQ  | D3(INT1)  | Digital IO/JeePlug Interrupt    |
+| Port 3  | 1   | PWR  | PWR(VIN)  | External Power Supply           |
+|         | 2   | DIO3 | D6(PWM)   | Digital IO/PWM Timer 0          |
+|         | 3   | GND  | GND       | Power Supply Ground             |
+|         | 4   | 3V3  | 3V3       | Regulated 3.3V Power Supply     |
+|         | 5   | AIO3 | A2(D16)   | Digital/Analog IO               |
+|         | 6   | IRQ  | D3(INT1)  | Digital IO/JeePlug Interrupt    |
+| Port 4  | 1   | PWR  | PWR(VIN)  | External Power Supply           |
+|         | 2   | DIO4 | D7        | Digital IO                      |
+|         | 3   | GND  | GND       | Power Supply Ground             |
+|         | 4   | 3V3  | 3V3       | Regulated 3.3V Power Supply     |
+|         | 5   | AIO4 | A3(D17)   | Digital/Analog IO               |
+|         | 6   | IRQ  | D3(INT1)  | Digital IO/JeePlug Interrupt    |
 ![JeeNode v6 Pinout](http://jeelabs.org/wp-content/uploads/2013/03/qrc-jn-v6-part.png "JeeNode v6 Pinout")
 * The *RFM69HW* radio can be also connected to the Raspberry PI GPIO header by
 using the SPI pins *3V3*, *MOSI*, *MISO*, *SCLK*, *CE0*, and *GND*. Beware that
