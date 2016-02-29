@@ -44,7 +44,7 @@ void setup() {
 	pinMode(LED_BUILTIN, OUTPUT);
 
 	// RFM69 radio.
-	rfm69.init(28, 42, 8686);
+	rfm69.init(63, 42, 8686);
 	//rfm69.encrypt("mysecret");
 
 	Serial.begin(115200);
