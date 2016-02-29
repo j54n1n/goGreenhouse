@@ -43,7 +43,7 @@ uint8_t txBuffer[62];
 
 void setup() {
 	// Setup all ports with weak pull-up to save power.
-	for (uint8_t i = 0; i <= 13; i++) {
+	for (uint8_t i = 0; i <= 19; i++) {
 		pinMode(i, INPUT_PULLUP);
 	}
 
