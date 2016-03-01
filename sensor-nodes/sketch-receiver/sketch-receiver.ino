@@ -56,17 +56,20 @@ void loop() {
 	if (length >= 0) {
 		digitalWrite(LED_BUILTIN, HIGH);
 		Serial.print("OK ");
+		Serial.print(length);
+		Serial.print("byte(s) ");
 		for (int i = 0; i < length; ++i) {
 			Serial.print(rxBuffer[i] >> 4, HEX);
 			Serial.print(rxBuffer[i] & 0xF, HEX);
 		}
 		Serial.print(" (");
-		Serial.print(rfm69.rssi);
+		Serial.print(rfm69.getRssiValue());
+		Serial.print("dBm");
 		Serial.print(rfm69.afc < 0 ? "" : "+");
 		Serial.print(rfm69.afc);
 		Serial.print(":");
-		Serial.print(rfm69.lna);
-		Serial.println(")");
+		Serial.print(rfm69.getLnaGain());
+		Serial.println("dB)");
 		digitalWrite(LED_BUILTIN, LOW);
 	}
 }
