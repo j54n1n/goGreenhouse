@@ -4,3 +4,6 @@
 [submodule "sensor-nodes/libraries/Rfm69"]
 	path = sensor-nodes/libraries/Rfm69
 	url = git@github.com:j54n1n/rfm69.git
+[submodule "sensor-nodes/libraries/SpiDevice"]
+	path = sensor-nodes/libraries/SpiDevice
+	url = git@github.com:j54n1n/spidevice.git
