@@ -59,8 +59,22 @@ void loop() {
 		Serial.print(length);
 		Serial.print("byte(s) ");
 		for (int i = 0; i < length; ++i) {
-			Serial.print(rxBuffer[i] >> 4, HEX);
-			Serial.print(rxBuffer[i] & 0xF, HEX);
+			if (i == 2) {
+				// Packet number.
+				Serial.print(" #");
+				Serial.print(rxBuffer[i]);
+				Serial.print(" ");
+			} else if (i == 3) {
+				// RFM69 remote temperature.
+				Serial.print("temp=");
+				Serial.print(rxBuffer[i]);
+				Serial.print((char)176); // Degree symbol.
+				Serial.print("C ");
+			} else {
+				// Received header or remaining data.
+				Serial.print(rxBuffer[i] >> 4, HEX);
+				Serial.print(rxBuffer[i] & 0xF, HEX);
+			}
 		}
 		Serial.print(" (");
 		Serial.print(rfm69.getRssiValue());

@@ -62,7 +62,13 @@ void setup() {
 void loop() {
 	digitalWrite(LED_BUILTIN, HIGH);
 
+	// txBuffer[0] stores the packet counter.
 	size_t txLength = ++txBuffer[0] % (sizeof(txBuffer) + 1);
+
+	// txBuffer[1] stores the RFM69 temperature reading.
+	int8_t temperature = rfm69.getTemperature();
+	txBuffer[1] = temperature;
+
 	rfm69.send(0, txBuffer, txLength);
 	rfm69.sleep();
 
