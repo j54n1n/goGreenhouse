@@ -7,3 +7,6 @@
 [submodule "sensor-nodes/libraries/SpiDevice"]
 	path = sensor-nodes/libraries/SpiDevice
 	url = git@github.com:j54n1n/spidevice.git
+[submodule "sensor-nodes/libraries/SpiFlash"]
+	path = sensor-nodes/libraries/SpiFlash
+	url = git@github.com:j54n1n/spiflash.git
