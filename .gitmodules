@@ -1,12 +1,12 @@
 [submodule "sensor-nodes/libraries/JeeLib"]
 	path = sensor-nodes/libraries/JeeLib
-	url = git@github.com:j54n1n/jeelib.git
+	url = https://github.com/j54n1n/jeelib.git
 [submodule "sensor-nodes/libraries/Rfm69"]
 	path = sensor-nodes/libraries/Rfm69
-	url = git@github.com:j54n1n/rfm69.git
+	url = https://github.com/j54n1n/rfm69.git
 [submodule "sensor-nodes/libraries/SpiDevice"]
 	path = sensor-nodes/libraries/SpiDevice
-	url = git@github.com:j54n1n/spidevice.git
+	url = https://github.com/j54n1n/spidevice.git
 [submodule "sensor-nodes/libraries/SpiFlash"]
 	path = sensor-nodes/libraries/SpiFlash
-	url = git@github.com:j54n1n/spiflash.git
+	url = https://github.com/j54n1n/spiflash.git
