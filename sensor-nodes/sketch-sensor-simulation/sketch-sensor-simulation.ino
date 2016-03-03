@@ -29,6 +29,7 @@ THE SOFTWARE.
 
 #include <SPI.h>
 #include <SpiDevice.h>
+#include <SpiFlash.h>
 #include <Rfm69.h>
 
 #ifdef LED_BUILTIN
@@ -36,10 +37,19 @@ THE SOFTWARE.
 #endif
 #define LED_BUILTIN 9 // On Moteino R4 LED is connected to D9 instead of D13.
 
+struct Packet {
+	uint64_t uniqueId;
+	uint8_t packetType;
+	uint8_t packetVersion;
+	uint8_t sequenceNumber;
+	int8_t temperature;
+} payload = { 0, 1, 1, 0, 0 };
+
 // RFM69HW radio with Slave Select on Arduino pin 10.
 Rfm69<SpiDevice<10>, Rfm69ModelHW> rfm69;
 
-uint8_t txBuffer[62];
+// W25X40CL flash memory with Slave Select on Arduino pin 8.
+SpiFlash<SpiDevice<8> > flash;
 
 void setup() {
 	// Setup all ports with weak pull-up to save power.
@@ -51,29 +61,31 @@ void setup() {
 	pinMode(LED_BUILTIN, OUTPUT);
 
 	// RFM69 radio.
-	rfm69.init(28, 42, 8686);
+	rfm69.init(61, 42, 8686);
 	//rfm69.encrypt("mysecret");
 	//rfm69.setTransmitPower(+17/*dBm*/);
 	rfm69.sleep();
-	for (size_t i = 0; i < sizeof(txBuffer); i++)
-		txBuffer[i] = (uint8_t)i;
+
+	// Flash memory.
+	flash.init();
+	payload.uniqueId = flash.getUniqueId();
+	flash.sleep();
 }
 
 void loop() {
+	const uint32_t timePeriodMillis = 1000; // Transmit at least every second.
+	const uint32_t timeStart = millis();
 	digitalWrite(LED_BUILTIN, HIGH);
-
-	// txBuffer[0] stores the packet counter.
-	size_t txLength = ++txBuffer[0] % (sizeof(txBuffer) + 1);
-
-	// txBuffer[1] stores the RFM69 temperature reading.
-	int8_t temperature = rfm69.getTemperature();
-	txBuffer[1] = temperature;
-
-	rfm69.send(0, txBuffer, txLength);
+	payload.temperature = rfm69.getTemperature();
+	rfm69.send(0, &payload, sizeof(Packet));
 	rfm69.sleep();
-
+	payload.sequenceNumber++;
 	digitalWrite(LED_BUILTIN, LOW);
-	Sleepy::loseSomeTime(960/*ms*/); // loseSomeTime() works just like delay().
+	// Calculate minimum time needed to maintain 1% transmission duty cycle.
+	const uint32_t time1Percent = (millis() - timeStart) * 100; // ms.
+	// Set low power mode and maintain duty cycle or transmit every time period.
+	Sleepy::loseSomeTime(
+		(time1Percent > timePeriodMillis) ? time1Percent : timePeriodMillis);
 }
 
 ISR(WDT_vect) {

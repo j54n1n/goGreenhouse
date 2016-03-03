@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
 #include <SPI.h>
 #include <SpiDevice.h>
@@ -33,6 +34,22 @@ THE SOFTWARE.
 #undef LED_BUILTIN
 #endif
 #define LED_BUILTIN 9 // On Moteino R4 LED is connected to D9 instead of D13.
+
+struct Packet {
+	uint64_t uniqueId;
+	uint8_t packetType;
+	uint8_t packetVersion;
+	uint8_t sequenceNumber;
+	int8_t temperature;
+} payload;
+
+union UniqueId {
+	uint64_t value;
+	struct {
+		uint32_t lo;
+		uint32_t hi;
+	} ints;
+};
 
 // RFM69HW radio with Slave Select on Arduino pin 10.
 Rfm69<SpiDevice<10>, Rfm69ModelHW> rfm69;
@@ -55,35 +72,54 @@ void loop() {
 	int length = rfm69.receive(rxBuffer, sizeof(rxBuffer));
 	if (length >= 0) {
 		digitalWrite(LED_BUILTIN, HIGH);
-		Serial.print("OK ");
+		Serial.print(F("OK "));
 		Serial.print(length);
-		Serial.print("byte(s) ");
+		Serial.print(F("byte(s) "));
 		for (int i = 0; i < length; ++i) {
 			if (i == 2) {
-				// Packet number.
-				Serial.print(" #");
-				Serial.print(rxBuffer[i]);
-				Serial.print(" ");
-			} else if (i == 3) {
-				// RFM69 remote temperature.
-				Serial.print("temp=");
-				Serial.print(rxBuffer[i]);
-				Serial.print((char)176); // Degree symbol.
-				Serial.print("C ");
-			} else {
-				// Received header or remaining data.
-				Serial.print(rxBuffer[i] >> 4, HEX);
-				Serial.print(rxBuffer[i] & 0xF, HEX);
+				// Start of payload.
+				Serial.print(F(" ["));
 			}
+			Serial.print(rxBuffer[i] >> 4, HEX);
+			Serial.print(rxBuffer[i] & 0xF, HEX);
 		}
-		Serial.print(" (");
+		Serial.print(F("] ("));
 		Serial.print(rfm69.getRssiValue());
-		Serial.print("dBm");
-		Serial.print(rfm69.afc < 0 ? "" : "+");
+		Serial.print(F("dBm"));
+		Serial.print(rfm69.afc < 0 ? F("") : F("+"));
 		Serial.print(rfm69.afc);
-		Serial.print(":");
+		Serial.print(F(":"));
 		Serial.print(rfm69.getLnaGain());
-		Serial.println("dB)");
+		Serial.println(F("dB)"));
+
+		// Decoded packet.
+		Serial.print(F("Packet:"));
+		uint8_t parity = ((rxBuffer[0] & 0xC0) >> 6);
+		uint8_t header = ((rxBuffer[1] & 0xC0) | (rxBuffer[0] & 0x3F));
+		uint8_t sourceId = rxBuffer[1] & 0x3F;
+		Serial.print(F(" p="));
+		Serial.print(parity, HEX);
+		Serial.print(F(" h="));
+		Serial.print(header, HEX);
+		Serial.print(F(" srcId="));
+		Serial.print(sourceId);
+		memcpy(&payload, &rxBuffer[2], sizeof(Packet));
+		Serial.print(F(" [uniqueId=0x"));
+		UniqueId uid;
+		uid.value = payload.uniqueId;
+		Serial.print(uid.ints.hi, HEX);
+		Serial.print(uid.ints.lo, HEX);
+		Serial.print(F(" packetType=0x"));
+		Serial.print(payload.packetType, HEX);
+		Serial.print(F(" packetVersion=0x"));
+		Serial.print(payload.packetVersion, HEX);
+		Serial.print(F(" sequenceNumber=0x"));
+		Serial.print(payload.sequenceNumber, HEX);
+		Serial.print(F(" temperature="));
+		Serial.print(payload.temperature);
+		Serial.print((char)176); // Degree symbol.
+		Serial.println(F("C]"));
+
 		digitalWrite(LED_BUILTIN, LOW);
 	}
 }
