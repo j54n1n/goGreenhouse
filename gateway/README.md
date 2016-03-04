@@ -17,3 +17,7 @@ Example:
 mosquitto_pub -t path/to/topic -m "Your Message"
 mosquitto_sub -v -t '#'
 ```
+### Documentation
+http://mosquitto.org/api/files/mosquitto-h.html
+http://git.eclipse.org/c/mosquitto/org.eclipse.mosquitto.git/tree/lib/mosquitto.h
+http://git.eclipse.org/c/mosquitto/org.eclipse.mosquitto.git/tree/lib/cpp/mosquittopp.h
