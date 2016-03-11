@@ -34,7 +34,9 @@ and added *W25X40CL* 512kB Flash memory chip. See also
 [Moteino R4 Schematic](https://github.com/LowPowerLab/Moteino/blob/master/R4/MoteinoR4_schematic.pdf).
 ![Moteino R4 Pinout](https://farm4.staticflickr.com/3818/10585364014_df2e1604bc_o.png "Moteino R4 Pinout")
 * The Moteino can be modified to support *JeeLib*'s *JeePort*s 1 to 4 by using
-a simple adapter board. Thus support is given for up to 4 *Plug* boards that can
+a simple adapter board. For example:
+![Proto Board](http://jeelabs.net/attachments/download/486/jlpcb-037.png "Proto Board")
+* Thus support is given for up to 4 *Plug* boards that can
 contain specific sensors and actuators. See also
 [JeeNode v6 Schematic](http://jeelabs.net/attachments/download/331/jlpcb-128.pdf).
 ![JeeNode v6 Pinout](http://jeelabs.org/wp-content/uploads/2013/03/qrc-jn-v6-part.png "JeeNode v6 Pinout")
