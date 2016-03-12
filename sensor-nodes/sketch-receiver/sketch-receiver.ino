@@ -29,19 +29,12 @@ THE SOFTWARE.
 #include <SPI.h>
 #include <SpiDevice.h>
 #include <Rfm69.h>
+#include <Rfm69Packet.h>
 
 #ifdef LED_BUILTIN
 #undef LED_BUILTIN
 #endif
 #define LED_BUILTIN 9 // On Moteino R4 LED is connected to D9 instead of D13.
-
-struct Packet {
-	uint64_t uniqueId;
-	uint8_t packetType;
-	uint8_t packetVersion;
-	uint8_t sequenceNumber;
-	int8_t temperature;
-} payload;
 
 union UniqueId {
 	uint64_t value;
@@ -102,23 +95,35 @@ void loop() {
 		Serial.print(F(" h="));
 		Serial.print(header, HEX);
 		Serial.print(F(" srcId="));
-		Serial.print(sourceId);
-		memcpy(&payload, &rxBuffer[2], sizeof(Packet));
-		Serial.print(F(" [uniqueId=0x"));
-		UniqueId uid;
-		uid.value = payload.uniqueId;
-		Serial.print(uid.ints.hi, HEX);
-		Serial.print(uid.ints.lo, HEX);
-		Serial.print(F(" packetType=0x"));
-		Serial.print(payload.packetType, HEX);
-		Serial.print(F(" packetVersion=0x"));
-		Serial.print(payload.packetVersion, HEX);
-		Serial.print(F(" sequenceNumber=0x"));
-		Serial.print(payload.sequenceNumber, HEX);
-		Serial.print(F(" temperature="));
-		Serial.print(payload.temperature);
-		Serial.print((char)176); // Degree symbol.
-		Serial.println(F("C]"));
+		Serial.println(sourceId);
+
+		using namespace Rfm69Packet;
+		Packet packet;
+		memcpy(&packet, &rxBuffer[2], sizeof(Packet));
+		Serial.print(F(" Copied sizeof(Packet)="));
+		Serial.print(sizeof(Packet));
+		Serial.println(F("bytes"));
+		if (packet.packetType == PacketType_NodeTemperature) {
+			Packet_NodeTemperature nodeTemperature;
+			memcpy(&nodeTemperature, &rxBuffer[2],
+				sizeof(Packet_NodeTemperature));
+			Serial.print(F(" Copied sizeof(Packet_NodeTemperature)="));
+			Serial.print(sizeof(Packet_NodeTemperature));
+			Serial.println(F("bytes"));
+			Serial.print(F(" [uniqueId=0x"));
+			UniqueId uid;
+			uid.value = nodeTemperature.uniqueId;
+			Serial.print(uid.ints.hi, HEX);
+			Serial.print(uid.ints.lo, HEX);
+			Serial.print(F(" packetType=0x"));
+			Serial.print(nodeTemperature.packetType, HEX);
+			Serial.print(F(" sequenceNumber=0x"));
+			Serial.print(nodeTemperature.sequenceNumber, HEX);
+			Serial.print(F(" temperature="));
+			Serial.print(nodeTemperature.temperature);
+			Serial.print((char)176); // Degree symbol.
+			Serial.println(F("C]"));
+		}
 
 		digitalWrite(LED_BUILTIN, LOW);
 	}

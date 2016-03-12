@@ -31,25 +31,21 @@ THE SOFTWARE.
 #include <SpiDevice.h>
 #include <SpiFlash.h>
 #include <Rfm69.h>
+#include <Rfm69Packet.h>
 
 #ifdef LED_BUILTIN
 #undef LED_BUILTIN
 #endif
 #define LED_BUILTIN 9 // On Moteino R4 LED is connected to D9 instead of D13.
 
-struct Packet {
-	uint64_t uniqueId;
-	uint8_t packetType;
-	uint8_t packetVersion;
-	uint8_t sequenceNumber;
-	int8_t temperature;
-} payload = { 0, 1, 1, 0, 0 };
-
 // RFM69HW radio with Slave Select on Arduino pin 10.
 Rfm69<SpiDevice<10>, Rfm69ModelHW> rfm69;
 
 // W25X40CL flash memory with Slave Select on Arduino pin 8.
 SpiFlash<SpiDevice<8> > flash;
+
+using namespace Rfm69Packet;
+Packet_NodeTemperature nodeTemperature;
 
 void setup() {
 	// Setup all ports with weak pull-up to save power.
@@ -66,9 +62,12 @@ void setup() {
 	//rfm69.setTransmitPower(+17/*dBm*/);
 	rfm69.sleep();
 
+	// Data packets.
+	Packet_init((Packet*)&nodeTemperature, PacketType_NodeTemperature);
+
 	// Flash memory.
 	flash.init();
-	payload.uniqueId = flash.getUniqueId();
+	nodeTemperature.uniqueId = flash.getUniqueId();
 	flash.sleep();
 }
 
@@ -76,10 +75,10 @@ void loop() {
 	const uint32_t timePeriodMillis = 1000; // Transmit at least every second.
 	const uint32_t timeStart = millis();
 	digitalWrite(LED_BUILTIN, HIGH);
-	payload.temperature = rfm69.getTemperature();
-	rfm69.send(0, &payload, sizeof(Packet));
+	nodeTemperature.temperature = rfm69.getTemperature();
+	rfm69.send(0, &nodeTemperature, sizeof(Packet_NodeTemperature));
 	rfm69.sleep();
-	payload.sequenceNumber++;
+	nodeTemperature.sequenceNumber++;
 	digitalWrite(LED_BUILTIN, LOW);
 	// Calculate minimum time needed to maintain 1% transmission duty cycle.
 	const uint32_t time1Percent = (millis() - timeStart) * 100; // ms.
