@@ -28,6 +28,7 @@ THE SOFTWARE.
 #include <cstring>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include <mosquittopp.h>
 
@@ -79,6 +80,8 @@ Rfm69<SpiDevice<0>> rfm69;
 
 uint8_t rxBuffer[64] = { 0 };
 
+ostringstream vss;
+
 int main(void) {
 	// RFM69 radio.
         rfm69.init(63, 42, 8686);
@@ -123,6 +126,18 @@ int main(void) {
 			cout << " sequenceNumber=0x" << hex << (int)payload.sequenceNumber;
 			cout << " temperature=" << dec << (int)payload.temperature;
 			cout << " degree C]" << endl;
+
+			// Publish packet.
+			ostringstream tss;
+			string topic = "raw/rfm69/8686/42/";
+			tss << payload.uniqueId;
+			topic += tss.str();
+			topic += "/temperature";
+			vss.str("");
+			vss << (int)(payload.temperature);
+			const char *str = vss.str().c_str();
+			size_t length = vss.str().length()+1;
+			mqtt.publish(0, topic.c_str(), length, str);
 		}
 	}
 }
