@@ -1,7 +1,7 @@
-CXXFLAGS += -Wall -Wextra -Wpedantic -std=c++11
-LDLIBS = -lmosquittopp
+CXXFLAGS += -Wall -Wextra -Wpedantic -std=c++11 -I../../sensor-nodes/libraries
+LDLIBS = -lmosquittopp -lwiringPi
 
-all: mqtt
+all: mqtt-relay
 
 clean:
 	rm -f *.o mqtt
