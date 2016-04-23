@@ -10,6 +10,3 @@
 [submodule "sensor-nodes/libraries/SpiFlash"]
 	path = sensor-nodes/libraries/SpiFlash
 	url = https://github.com/j54n1n/spiflash.git
-[submodule "sensor-nodes/libraries/ArduinoJson"]
-	path = sensor-nodes/libraries/ArduinoJson
-	url = https://github.com/bblanchon/ArduinoJson.git
